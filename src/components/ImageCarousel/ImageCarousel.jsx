@@ -5,6 +5,21 @@ import matcha3 from './images/matcha-3.jpg'
 import matcha4 from './images/matcha-4.jpg'
 
 const images = [matcha1, matcha2, matcha3, matcha4]
+
+const ImageCard = (props) => {
+  return (
+    <img
+      src={props.src}
+      width={props.width || 293}
+      height={props.height || 293}
+      style={{
+        borderRadius: '10px',
+      }}
+      alt="matcha"
+    />
+  )
+}
+
 function ImageCarousel() {
   const [index, setIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -41,15 +56,7 @@ function ImageCarousel() {
   return (
     <div>
       <div>
-        <img
-          src={images[index]}
-          width={293}
-          height={293}
-          style={{
-            borderRadius: '10px',
-          }}
-          alt="matcha"
-        />
+        <ImageCard src={images[index]} />
       </div>
       <div>
         <button onClick={first}>{'<<'}</button>

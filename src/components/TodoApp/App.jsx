@@ -71,8 +71,6 @@ function App() {
       <div>
         <span>
           Show:{' '}
-          {visibilityFilter === 'statsxxxxxx' ? 'Active' : <p>Active</p>}
-
           {visibilityFilter === 'all' ? (
             'All'
           ) : (

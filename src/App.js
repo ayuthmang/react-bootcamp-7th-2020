@@ -1,10 +1,12 @@
 import React from 'react'
-import SwitchButtonStyled from './components/styling/SwitchButtonStyled'
+// import Counter from './components/state/Counter'
+// import SwitchButtonStyled from './components/styling/SwitchButtonStyled'
+import ImageCarousel from './components/ImageCarousel/ImageCarousel'
 
 function App() {
   return (
     <div>
-      <SwitchButtonStyled />
+      <ImageCarousel />
     </div>
   )
 }

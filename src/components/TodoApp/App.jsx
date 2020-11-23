@@ -1,8 +1,11 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
+import VisibleTodoList from './VisibleTodoList'
+import AddTodo from './AddTodo'
+import Footer from './Footer'
 
 let id = 1
 
-function getVisibilityFilter(todos, filter) {
+function getVisibleTodos(todos, filter) {
   switch (filter) {
     case 'all':
       return todos
@@ -21,81 +24,46 @@ function App() {
     { id: id++, text: 'Learn Vue', completed: false },
   ])
   const [visibilityFilter, setVisibilityFilter] = useState('all') // completed, active
-  const todoRef = useRef()
-  const onSubmit = (e) => {
-    e.preventDefault()
-    const input = todoRef.current.value
-    if (input !== '') {
-      setTodos([...todos, { id: id++, text: input, completed: false }])
-      todoRef.current.value = ''
-    }
+
+  const onSubmit = (text) => {
+    setTodos([
+      ...todos,
+      {
+        id: id++,
+        text: text,
+        completed: false,
+      },
+    ])
   }
   const onFilterClick = (filter) => {
     setVisibilityFilter(filter)
   }
+  const onTodoClick = (id) => {
+    setTodos(
+      todos.map((targetTodo) => {
+        if (id !== targetTodo.id) {
+          return targetTodo
+        }
+
+        return {
+          ...targetTodo,
+          completed: !targetTodo.completed,
+        }
+      })
+    )
+  }
 
   return (
     <div>
-      <ul>
-        {getVisibilityFilter(todos, visibilityFilter).map((todo) => (
-          <li
-            key={todo.id}
-            onClick={() => {
-              setTodos(
-                todos.map((targetTodo) => {
-                  if (todo.id !== targetTodo.id) {
-                    return targetTodo
-                  }
-
-                  return {
-                    ...targetTodo,
-                    completed: !targetTodo.completed,
-                  }
-                })
-              )
-            }}
-            style={{
-              textDecoration: todo.completed ? 'line-through' : 'none',
-            }}
-          >
-            {todo.text}
-          </li>
-        ))}
-      </ul>
-      <div>
-        <form onSubmit={onSubmit}>
-          <input ref={todoRef} type="text" />
-          <button type="submit">Add Todo</button>
-        </form>
-      </div>
-      <div>
-        <span>
-          Show:{' '}
-          {visibilityFilter === 'all' ? (
-            'All'
-          ) : (
-            <a href="#/" onClick={() => onFilterClick('all')}>
-              All
-            </a>
-          )}{' '}
-          |{' '}
-          {visibilityFilter === 'completed' ? (
-            'Completed'
-          ) : (
-            <a href="#/" onClick={() => onFilterClick('completed')}>
-              Completed
-            </a>
-          )}{' '}
-          |{' '}
-          {visibilityFilter === 'active' ? (
-            'Active'
-          ) : (
-            <a href="#/" onClick={() => onFilterClick('active')}>
-              Active
-            </a>
-          )}
-        </span>
-      </div>
+      <VisibleTodoList
+        todos={getVisibleTodos(todos, visibilityFilter)}
+        onClick={onTodoClick}
+      />
+      <AddTodo onSubmit={onSubmit} />
+      <Footer
+        onFilterClick={onFilterClick}
+        visibilityFilter={visibilityFilter}
+      />
     </div>
   )
 }

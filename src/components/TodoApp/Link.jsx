@@ -1,3 +1,5 @@
+import { bool, func } from 'prop-types'
+
 const Link = (props) => {
   if (props.active) {
     return props.children
@@ -8,6 +10,11 @@ const Link = (props) => {
       {props.children}
     </a>
   )
+}
+
+Link.propTypes = {
+  active: bool.isRequired,
+  onClick: func.isRequired
 }
 
 export default Link
